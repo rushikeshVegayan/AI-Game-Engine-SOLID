@@ -13,120 +13,12 @@ public class GameEngine {
 		}
 	}
 
-	public GameResult isComplete(Board board) {
-
-		String firstPlayer = "-";
-		String winner = "-";
-		if (board instanceof TicTacToeBoard board1) {
-			System.out.println(board1);
-
-			//if Row same
-            boolean rowComplete = true;
-			for (int rowIndex = 0; rowIndex < 3; rowIndex++) {
-				firstPlayer = board1.getCell(rowIndex, 0);
-				rowComplete = firstPlayer != null;
-				if(firstPlayer == null) continue;
-				for (int colIndex = 1; colIndex < 3; colIndex++) {
-					if (!firstPlayer.equals(board1.getCell(rowIndex, colIndex))) {
-						rowComplete = false;
-						break;
-					}
-				}
-				if (rowComplete) return new GameResult(true, firstPlayer);
-
-			}
-
-
-
-
-			//if Col same
-			boolean colComplete = true;
-			for (int colIndex = 0; colIndex < 3; colIndex++) {
-				firstPlayer = board1.getCell(0, colIndex);
-				colComplete = firstPlayer != null;
-				if(firstPlayer == null) continue;
-				for (int rowIndex = 0; rowIndex < 3; rowIndex++) {
-					if (!firstPlayer.equals(board1.getCell(rowIndex, colIndex))) {
-						colComplete = false;
-						break;
-					}
-				}
-				if (colComplete) return new GameResult(true, firstPlayer);
-
-			}
-
-
-
-			//if startDiagonal
-			boolean isStartDiagonalComplete = true;
-			firstPlayer = board1.getCell(0, 0);
-			isStartDiagonalComplete = firstPlayer != null;
-			if(firstPlayer != null) {
-				for (int index = 0; index < 3; index++) {
-					if (!firstPlayer.equals(board1.getCell(index, index++))) {
-						isStartDiagonalComplete = false;
-						break;
-					}
-				}
-			}
-
-			if (isStartDiagonalComplete) return new GameResult(true, firstPlayer);
-
-			//if endDiagonal
-			boolean isEndDiagonal = true;
-			firstPlayer = board1.getCell(0, 2);
-			isEndDiagonal = firstPlayer != null;
-			if(firstPlayer != null) {
-				for (int index = 1; index < 3; index++) {
-					if (!firstPlayer.equals(board1.getCell(index, 3 - index - 1))) {
-						isEndDiagonal = false;
-						break;
-					}
-				}
-			}
-			if (isEndDiagonal) return new GameResult(isEndDiagonal, firstPlayer);
-
-			int countOfFilledCells = 0;
-
-			for (int rowIndex = 0; rowIndex < 3; rowIndex++) {
-				for (int colIndex = 0; colIndex < 3; colIndex++) {
-					if (board1.getCell(rowIndex, colIndex) != null) {
-						countOfFilledCells++;
-					}
-				}
-			}
-
-			if (countOfFilledCells == 9) return new GameResult(true, "-");
-
-		} else {
-			return new GameResult(false, "Error");
-		}
-		return new GameResult(false, "-");
-	}
-
 	public void move(Board borad, Player player, Move move) {
 		if(borad instanceof TicTacToeBoard){
 			((TicTacToeBoard) borad).setCell(player.symbol(), move.getCell());
 		}else{
 			throw new IllegalArgumentException();
 		}
-	}
-
-	public Move suggestMove(Board board, Player computer) {
-
-		if (board instanceof TicTacToeBoard ) {
-			TicTacToeBoard board1 = (TicTacToeBoard) board;
-
-			for (int colIndex = 0; colIndex < 3; colIndex++) {
-				for (int rowIndex = 1; rowIndex < 3; rowIndex++) {
-					if(board1.getCell(rowIndex, colIndex) == null){
-						Cell cell = new Cell(rowIndex, colIndex);
-						return new Move(cell);
-					}
-				}
-			}
-		}
-		throw new IllegalStateException();
 	}
 }
 

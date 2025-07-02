@@ -25,4 +25,9 @@ public class TicTacToeBoard extends Board {
         }
         return sb.toString();
     }
+
+    @Override
+    public void move(Move move) {
+        setCell(move.getPlayer().playerSymbol, move.getCell());
+    }
 }

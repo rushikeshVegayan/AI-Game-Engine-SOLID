@@ -1,6 +1,8 @@
 package com.AI.EngineBoardGame;
 
+import api.AIPlayer;
 import api.GameEngine;
+import api.RuleEngine;
 import game.Board;
 import game.Cell;
 import game.Move;
@@ -11,19 +13,22 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args){
         GameEngine gameEngine = new GameEngine();
+        RuleEngine ruleEngine = new RuleEngine();
         Board board = gameEngine.start("TicTacToe");
+
+        AIPlayer aiPlayer = new AIPlayer();
         Scanner scanner = new Scanner(System.in);
         int row;
         int col;
-        while (!gameEngine.isComplete(board).isOver()) {
+        while (!ruleEngine.getState(board).isOver()) {
             row = scanner.nextInt();
             col = scanner.nextInt();
             Player opponent = new Player("X"), computer = new Player("O");
-            Move opponentMove = new Move(new Cell(row, col));
-            Move sugeestMove = gameEngine.suggestMove(board, computer);
+            Move opponentMove = new Move(opponent, new Cell(row, col));
+            Move sugeestMove = aiPlayer.suggestMove(board, computer);
             gameEngine.move(board, computer, sugeestMove);
             gameEngine.move(board, opponent, opponentMove);
         }
-        System.out.println("Board result is " + gameEngine.isComplete(board).isOver() + " Winner is " + gameEngine.isComplete(board).getWinner());
+        System.out.println("Board result is " + ruleEngine.getState(board).isOver() + " Winner is " + ruleEngine.getState(board).getWinner());
     }
 }
